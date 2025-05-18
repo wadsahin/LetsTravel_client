@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SocialLogin from "../../components/auth/SocialLogin";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
@@ -8,6 +8,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 const Register = () => {
   const { createUser, setLoading, profileUpdate } = useAuth();
   const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -32,7 +33,15 @@ const Register = () => {
           profileUpdate(userInfo)
             .then(() => {
               // Now save the user in db
-              const newUser = { name, email, password, avatar: photo, bio: '', role: 'user', followers: 0, following: 0 };
+              const newUser = {
+                name, 
+                email, 
+                avatar: photo, 
+                bio: '', 
+                role: 'user', 
+                followers: 0, 
+                following: 0
+              };
               // console.log(newUser);
               axiosPublic.post("/users", newUser)
                 .then(res => {
@@ -40,6 +49,7 @@ const Register = () => {
                   if (res.data?.insertedId) {
                     reset();
                     toast.success('Your account created successfully');
+                    navigate("/");
                   }
                 })
 
