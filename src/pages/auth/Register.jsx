@@ -2,26 +2,56 @@ import { Link } from "react-router-dom";
 import SocialLogin from "../../components/auth/SocialLogin";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Register = () => {
-  const { createUser } = useAuth();
+  const { createUser, setLoading, profileUpdate } = useAuth();
+  const axiosPublic = useAxiosPublic();
 
   const {
     register,
     handleSubmit,
+    reset,
     // watch,
     formState: { errors },
   } = useForm();
-
-  console.log(errors)
 
   const handleRegisterForm = (data) => {
     const name = data.firstName + " " + data.lastName;
     const photo = data.photo;
     const email = data.email;
     const password = data.password;
-    const newUser = { name, email, password, photo };
-    console.log(newUser);
+    // console.log(newUser);
+    // Register wite firebase
+    createUser(email, password)
+      .then(result => {
+        console.log(result?.user);
+        if (result?.user) {
+          const userInfo = { displayName: name, photoURL: photo };
+          profileUpdate(userInfo)
+            .then(() => {
+              // Now save the user in db
+              const newUser = { name, email, password, avatar: photo, bio: '', role: 'user', followers: 0, following: 0 };
+              // console.log(newUser);
+              axiosPublic.post("/users", newUser)
+                .then(res => {
+                  // console.log(res.data);
+                  if (res.data?.insertedId) {
+                    reset();
+                    toast.success('Your account created successfully');
+                  }
+                })
+
+            })
+            .catch(err => console.log("profile update error: ", err?.code))
+
+        }
+      })
+      .catch(err => {
+        toast.error(err?.code);
+        setLoading(false);
+      })
   }
 
   return (
@@ -35,27 +65,30 @@ const Register = () => {
           <div className="flex justify-between gap-2 w-full">
             <div className="form-control flex-1">
               <input {...register('firstName',
-                { required: true, message: "This field is required!" })} 
-                type="text" 
-                placeholder="First name" 
+                { required: "This is required!" })}
+                type="text"
+                placeholder="First name"
                 className="input input-bordered rounded-full w-full" />
-              {errors.firstName && <p role="alert">{errors.firstName.message}</p>}
+              <p className="text-error pt-2">{errors.firstName?.message}</p>
             </div>
             <div className="form-control flex-1">
-              <input {...register('lastName', { required: true })} type="text" placeholder="Last name" className="input input-bordered rounded-full w-full" />
+              <input {...register('lastName', { required: "This is required!" })} type="text" placeholder="Last name" className="input input-bordered rounded-full w-full" />
             </div>
           </div>
           {/* row 2 */}
           <div className="form-control">
-            <input {...register('photo', { required: true })} type="text" placeholder="Profile photo" className="input input-bordered rounded-full" />
+            <input {...register('photo', { required: "This is required!" })} type="url" placeholder="Profile photo" className="input input-bordered rounded-full" />
+            <p className="text-error pt-2">{errors.photo?.message}</p>
           </div>
           {/* row 3 */}
           <div className="form-control">
-            <input {...register('email', { required: true })} type="email" placeholder="Email address" className="input input-bordered rounded-full" />
+            <input {...register('email', { required: "This is required!" })} type="email" placeholder="Email address" className="input input-bordered rounded-full" />
+            <p className="text-error pt-2">{errors.email?.message}</p>
           </div>
           {/* row 4 */}
           <div className="form-control">
-            <input {...register('password', { required: true, minLength: 6 })} type="password" placeholder="**********" className="input input-bordered rounded-full" />
+            <input {...register('password', { required: "This is required!", minLength: 6 })} type="password" placeholder="**********" className="input input-bordered rounded-full" />
+            <p className="text-error pt-2">{errors.password?.message}</p>
           </div>
           <div className="form-control mt-6">
             <button className="btn bg-primary text-white rounded-full hover:text-primary text-base">Register</button>
