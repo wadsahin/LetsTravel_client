@@ -3,26 +3,34 @@ import { Link } from "react-router-dom";
 import Rating from "../Rating";
 
 
-const DestinationCard = ({name, image, desc}) => {
-
+const DestinationCard = ({ destin }) => {
+  const { title, description, imageUrl } = destin;
+  // name, image, desc
   return (
-    <div className="card card-compact bg-white rounded-none">
+    <div className="card card-compact bg-white rounded-none flex flex-col min-h-[500px]">
       <figure>
-        <img
-          src={image}
-          alt="Shoes" />
+        <img className="min-h-[280px] object-cover" src={imageUrl} alt="destination" />
       </figure>
-      <div className="card-body">
+
+      <div className="p-2 gap-3 flex flex-col flex-grow">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">{name}</h2>
+          <h2 className="text-xl font-bold">{title}</h2>
           <Rating />
         </div>
-        <p>{desc}... </p>
-        <div className="card-actions justify-center">
-          <Link to="/" className="btn btn-sm btn-outline border border-primary  text-primary px-4"><FaArrowRightLong /> Browse details</Link>
+
+        {/* This now stretches */}
+        <p className="flex-grow text-gray-600">
+          {description.length > 120 ? description.slice(0, 120) + '...' : description}
+        </p>
+
+        <div className="card-actions justify-center pb-3">
+          <Link to="/" className="btn btn-sm btn-outline border border-primary text-primary px-4">
+            <FaArrowRightLong /> Browse details
+          </Link>
         </div>
       </div>
     </div>
+
   );
 };
 

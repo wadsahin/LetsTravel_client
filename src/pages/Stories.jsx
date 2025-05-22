@@ -1,9 +1,8 @@
-import Register from "./auth/Register";
 
 const Stories = () => {
   return (
     <div>
-      <Register />
+      
     </div>
   );
 };

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "title": "Exploring the Hidden Beaches of Bali",
+    "destination": "Bali, Indonesia",
+    "description": "I discovered some of the most breathtaking hidden beaches during my three-week adventure in Bali. Away from the tourist crowds, these pristine shores offer a glimpse into paradise that few travelers get to experience. The journey to these secluded spots involves navigating narrow paths through lush jungles and descending steep cliffs, but the reward is absolutely worth it.",
+    "imageUrl": "https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+    "likes": 243,
+    "isLiked": false,
+    "author": {
+      "id": "a1",
+      "name": "Sarah Johnson",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
+      "isFollowed": false,
+      "followers": 1204
+    },
+    "date": "2023-07-15"
+  },
+  {
+    "id": "2",
+    "title": "Mountain Trekking in the Swiss Alps",
+    "destination": "Interlaken, Switzerland",
+    "description": "The Swiss Alps offer some of the most spectacular hiking experiences in the world. During my week-long trek through the mountains surrounding Interlaken, I encountered breathtaking vistas, charming alpine villages, and the most refreshing mountain air. The challenging trails tested my endurance but provided rewards beyond imagination.",
+    "imageUrl": "https://images.unsplash.com/photo-1426604966848-d7adac402bff",
+    "likes": 187,
+    "isLiked": true,
+    "author": {
+      "id": "a2",
+      "name": "Michael Chen",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+      "isFollowed": true,
+      "followers": 852
+    },
+    "date": "2023-08-22"
+  }
+  
+]
